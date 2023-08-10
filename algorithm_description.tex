@@ -1,9 +1,12 @@
 \documentclass[14pt]{extarticle} 
 \usepackage[english]{babel}
 \usepackage[lighttt]{lmodern}
+\usepackage{amsmath}
 
 \usepackage{xcolor}
 \usepackage{listings}
+
+\DeclareMathOperator{\desc}{desc}
 
 \lstset{
 	language=Python,
@@ -20,8 +23,11 @@
 	showstringspaces=false            
 }
 
+\newtheorem{definition}{Definition}
+
 
 \begin{document}
+	
 	
 \title{"Path aware" alignment}
 \date{}
@@ -31,6 +37,28 @@
 Given a pedigree, represented as a directed acyclic graph $P = \{\mathcal{H},\mathcal{F}\},$ where $\mathcal{H}$ are haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{\mathcal{V}(C),\mathcal{E}(C)\}$ that is `extracted' from $P$ find a mapping from $M:V(C) \rightarrow H$ such that       
 
 \subsection{Formulation 1: Vertex only} 
+
+\begin{definition}
+	In a directed graph $D$, a vertex $v \in V(D)$ is a descendant of a vertex $u \in V(D)$ if there exists a simple directed path $ua_1 \ldots a_nv$.
+\end{definition}
+
+By $\desc(v)$, let's denote the set of all the descendants of $v$.
+
+\begin{definition}
+	
+	Let $D$ be a directed graph and $A = a_1, \ldots, a_n$ be a set of vertices in $V(D)$. A vertex $v \in V(D)$ is said to a genealogical common ancestor of $A$ if:
+	
+	\begin{itemize}
+		\item 
+		$A \subset \desc(v),$
+		\item 
+		$\forall u \in \desc(v): A \not \subset \desc(u).$
+	\end{itemize}
+	
+\end{definition}
+
+Given a pedigree, represented as a directed acyclic graph $P = \{\mathcal{H},\mathcal{F}\},$ where $\mathcal{H}$ are haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{\mathcal{V}(C),\mathcal{E}(C)\}$ that is `extracted' from $P$ find a mapping from $M:V(C) \rightarrow H$ such that 
+$\forall u \in V(C)$ with $N_C(u) \ne \emptyset$ it holds that $M(u)$ is a genealogical common ancestor of $M(N_C(u))$.
 
 \subsection{Formulation 2: Vertex-only with path-specific output}
 
