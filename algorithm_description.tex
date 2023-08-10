@@ -1,0 +1,114 @@
+\documentclass[14pt]{extarticle} 
+\usepackage[english]{babel}
+\usepackage[lighttt]{lmodern}
+
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstset{
+	language=Python,
+	basicstyle=\small,
+	otherkeywords={self},             
+	keywordstyle=\ttfamily\color{blue!90!black},
+	keywords=[2]{True,False},
+	keywords=[3]{ttk},
+	keywordstyle={[2]\ttfamily\color{yellow!80!orange}},
+	keywordstyle={[3]\ttfamily\color{red!80!orange}},
+	emph={MyClass,__init__},          
+	emphstyle=\ttfamily\color{red!80!black},    
+	stringstyle=\color{green!80!black},
+	showstringspaces=false            
+}
+
+
+\begin{document}
+	
+\title{"Path aware" alignment}
+\date{}
+		
+\section{Preprocessing step}
+
+The preprocessing step consists of three steps:
+
+\subsection{Reading the pedigree}
+
+During this step, we simply read the pedigree from a file and save the information about the graph. The time complexity of this step is $O(n)$ where $n$ is the number of vertices in the graph.
+
+\subsection{Calculating the levels and descendants lists from the probands}
+
+Next, we calculate the levels of the graph and the descendant list for every vertex in the graph. Every vertex has to know its descendants because we need this information to discard graphical common ancestors that are not genealogical common ancestors later in the algorithm.
+
+Generally speaking, having descendants for every vertex can require a lot of memory. According to my calculations, we should still be able to store it for large graphs. There are different more complicated approaches that can take a little bit more time but save a lot of memory. Since the preprocessing step is done only once, we can afford to spend more time during this step to lower the memory requirements.
+
+In the "path aware" approach, the descendant list also stores the path to every descendant.
+
+\subsection{Preprocessing the common ancestors map}
+
+Starting with the founders (whose map entries has been already calculated), the algorithm fills the common ancestors map for all the other vertices going level by level.
+
+\subsection{Result}
+
+In the end, we have a three-dimensional matrix (a dictionary of dictionaries of dictionaries) that returns a common ancestry object for a triple (a, b, c) where c is a common ancestor of a and b.
+
+The common ancestry object contains all the paths by which a and b can reach c.
+
+\begin{lstlisting}
+
+class PathCommonAncestry:
+	
+	def __init__(self, common_ancestor: int,
+		first_vertex: int, second_vertex: int,
+		first_vertex_paths: [Path],
+		second_vertex_paths: [Path]):
+		self.common_ancestor = common_ancestor
+		self.first_vertex = first_vertex
+		self.second_vertex = second_vertex
+		self.first_vertex_paths = first_vertex_paths
+		self.second_vertex_paths = second_vertex_paths
+	
+
+\end{lstlisting}
+
+\newpage
+
+\section{Alignment}
+
+\vspace*{-\baselineskip}
+
+\begin{lstlisting}
+
+class PathAligner:
+
+def align():
+# Get current partial mapping
+partial_mapping = get_partial_mapping()
+iterator = get_vertex_iterator()
+while not iterator.finished():
+	# Vertex in the coalescence tree that has not been mapped
+	vertex_to_map = iterator.next()
+	# Get the candidates for the vertex. If vertex_to_map has only
+	# one child (no coalescence), return None
+	candidates = get_candidates_for_vertex(vertex_to_map)
+	if candidates is None:
+		partial_mapping[vertex_to_map] = None
+		continue
+	result = []
+	for candidate in candidates:
+		if verify_assignment(vertex_to_map, candidate):
+			result.append(candidate)
+	# If there are no candidates whose assignment are consistent,
+	# trace back to the previous decision
+	if not result:
+		return None			
+	while length(result) > 0:
+		candidate_to_try = result.pop()
+		aligner = PathAligner(self)
+		alignment_result = aligner.align()
+		if alignment_result is not None:
+			return alignment_result
+	# None of the assignment worked, return None
+	return None
+\end{lstlisting}
+
+
+\end{document}
