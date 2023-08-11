@@ -32,9 +32,19 @@
 \title{"Path aware" alignment}
 \date{}
 
+
 \section{Problem statement}
-\subsection{Formulation 0: Vertex only, oracle} 
-Given a pedigree, represented as a directed acyclic graph $P = \{\mathcal{H},\mathcal{F}\},$ where $\mathcal{H}$ are haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{\mathcal{V}(C),\mathcal{E}(C)\}$ that is `extracted' from $P$ find a mapping from $M:V(C) \rightarrow H$ such that       
+
+\subsection{Notation}
+
+Given a pedigree, represented as a directed acyclic graph $P = \{H, F\},$ where $H$ represents haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{V(C), E(C)\}$ that is `extracted' from $P$, find a mapping $M: V(C) \rightarrow H$ such that $M(V(C))$ is consistent with $P$. The definition of being consistent is given by the problem formulation.
+
+
+\subsection{Formulation 0: Vertex only, oracle} (Not sure whether we need this formulation)
+
+In this version of the problem, there exists a map $O: V(C) \rightarrow H$ that is the only consistent function between $C$ and $P$.
+
+\textbf{Consistency condition:}  $M = O$.
 
 \subsection{Formulation 1: Vertex only} 
 
@@ -42,11 +52,11 @@ Given a pedigree, represented as a directed acyclic graph $P = \{\mathcal{H},\ma
 	In a directed graph $D$, a vertex $v \in V(D)$ is a descendant of a vertex $u \in V(D)$ if there exists a simple directed path $ua_1 \ldots a_nv$.
 \end{definition}
 
-By $\desc(v)$, let's denote the set of all the descendants of $v$.
+By $\desc_D(v)$, let's denote the set of all the descendants of $v$ in a directed graph $D$.
 
-\begin{definition}
+\begin{definition} (Incorrect)
 	
-	Let $D$ be a directed graph and $A = a_1, \ldots, a_n$ be a set of vertices in $V(D)$. A vertex $v \in V(D)$ is said to a genealogical common ancestor of $A$ if:
+	Let $D$ be a directed graph and $A = \{a_1, \ldots, a_n\}$ be a set of vertices in $V(D)$. A vertex $v \in V(D)$ is said to a genealogical common ancestor of $A$ if:
 	
 	\begin{itemize}
 		\item 
@@ -57,8 +67,20 @@ By $\desc(v)$, let's denote the set of all the descendants of $v$.
 	
 \end{definition}
 
-Given a pedigree, represented as a directed acyclic graph $P = \{\mathcal{H},\mathcal{F}\},$ where $\mathcal{H}$ are haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{\mathcal{V}(C),\mathcal{E}(C)\}$ that is `extracted' from $P$ find a mapping $M:V(C) \rightarrow H$ such that 
-$\forall u \in V(C)$ with $N_C(u) \ne \emptyset$ it holds that $M(u)$ is a genealogical common ancestor of $M(N_C(u))$.
+\begin{definition} (Correct)
+	
+	Let $D$ be a directed graph, $A = \{a_1, \ldots, a_n\}$ be a set of vertices in $V(D)$, and $v \in V(D)$. Put $C = \{u \in V(D) | A \subset \desc(u) \}$. The vertex $v \in V(D)$ is said to a genealogical common ancestor of $A$ if:
+	
+	\begin{itemize}
+		\item 
+		$v \in C,$
+		\item 
+		$A \subset \desc_{D'}(v)$ where $D' = D -  (C \setminus \{v\}).$
+	\end{itemize}
+	
+\end{definition}
+
+\textbf{Consistency condition:}  $\forall v \in V(C)$ with $N_C(u) \ne \emptyset$ it holds that $M(v)$ is a genealogical common ancestor of $M(N_C(u))$.
 
 \subsection{Formulation 2: Vertex-only with path-specific output}
 
@@ -85,9 +107,9 @@ Starting with the founders (whose map entries has been already calculated), the 
 
 \subsection{Result}
 
-In the end, we have a three-dimensional matrix (a dictionary of dictionaries of dictionaries) that returns a common ancestry object for a triple (a, b, c) where c is a common ancestor of a and b.
+In the end, we have a three-dimensional matrix (a dictionary of dictionaries of dictionaries) that returns a common ancestry object for a triple $(a, b, c)$ where $c$ is a common ancestor of $a$ and $b$.
 
-The common ancestry object contains all the paths by which a and b can reach c.
+The common ancestry object contains all the paths by which $a$ and $b$ can reach $c$.
 
 \begin{lstlisting}
 
