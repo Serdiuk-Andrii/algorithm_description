@@ -24,6 +24,7 @@
 }
 
 \newtheorem{definition}{Definition}
+\newcommand{\sgcomment}[1]{\textcolor{blue}{SG: #1}}
 
 
 \begin{document}
@@ -67,7 +68,7 @@ By $\desc_D(v)$, let's denote the set of all the descendants of $v$ in a directe
 	
 \end{definition}
 
-\begin{definition} (Correct)
+\begin{definition} (Incorrect)
 	
 	Let $D$ be a directed graph, $A = \{a_1, \ldots, a_n\}$ be a set of vertices in $V(D)$, and $v \in V(D)$. Put $C = \{u \in V(D) | A \subset \desc(u) \}$. The vertex $v \in V(D)$ is said to a genealogical common ancestor of $A$ if:
 	
@@ -80,7 +81,30 @@ By $\desc_D(v)$, let's denote the set of all the descendants of $v$ in a directe
 	
 \end{definition}
 
+
+
+
 \textbf{Consistency condition:}  $\forall v \in V(C)$ with $N_C(u) \ne \emptyset$ it holds that $M(v)$ is a genealogical common ancestor of $M(N_C(u))$.
+
+
+\begin{definition} (Incorrect)
+	
+	Let $D$ be a directed graph and $A = \{a_1, a_2\}$ be vertices in $V(D)$. A vertex $v \in V(D)$ is said to a most recent genealogical common ancestor of $A$ if there exists 
+	a distinct pair $(v_1,v_2)$ among the children of $v$ such that $a_1 \in \desc(v_1)$ and  $a_2 \in \desc(v_2).$
+	\sgcomment{deal with edge case $a_1 \in \desc(a_2)$}
+\end{definition}
+
+\textbf{Consistency condition:}  $\forall v \in V(C)$ with $N_C(u) \ne \emptyset$ it holds that $M(v)$ is a genealogical common ancestor of $M(N_C(u))$.
+
+
+\begin{definition} (Correct)
+	
+	Let $D$ be a directed graph and $A = \{a_1, a_2\}$ be vertices in $V(D)$. A vertex $v \in V(D)$ is said to a most recent genealogical common ancestor of $A$ if there exists 
+	a directed path $P_{v,a_1}$ between $v$ and $a_1$ and a directed path $P_{v,a_2}$ between $v$ and $a_2$ such that $P_{v,a_1} \cap P_{v,a_2} = \{v\}.$
+	\sgcomment{deal with edge case $a_1 \in \desc(a_2)$}
+\end{definition}
+
+
 
 \subsection{Formulation 2: Vertex-only with path-specific output}
 
