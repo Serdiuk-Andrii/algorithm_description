@@ -10,4 +10,9 @@ jobs:
         uses: dante-ev/latex-action@latest
         with:
           root_file: algorithm_description.tex
+      - name: Save the compiled PDF file
+        uses: actions/upload-artifact@v3
+        with:
+          name: algorithm_description.pdf
+          path: algorithm_description.pdf
           
