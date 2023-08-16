@@ -42,10 +42,26 @@
 
 Given a pedigree, represented as a directed acyclic graph $P = \{H, F\},$ where $H$ represents haploid individuals or ploids (vertices in the graph) and $F$ are genealogical filiations (edges in the graph), and a gene (coalescent) tree $C = \{V(C), E(C)\}.$ Our goal is to `align' the tree and the graph, i.e., find the path taken by the gene tree in the pedigree. Our solution can be encoded as a map from edges of $C$ to vertices of $P$:
 
+We do this in two steps, first by assigning sex to individuals along edges of the coalescent tree, then using genealogical sex assignments to map edges to genealogical individuals.  
+
+\begin{definition}
+An edge path map $M_e:E(C) \rightarrow {0,1}*$ is a map from edges of the coalescent tree to a binary string representing whether alleles along the edge were maternally ($0$) or paternally ($1$) inherited.     
+\end{definition}
+
+Similarly, 
+\begin{definition}
+A ploid path map of length $k$ is a map $M_k:S \rightarrow {0,1}*k$ from a set of genealogical ploids $S$ to binary strings of length $k$ representing the path of ancestral transmissions of this allele, according to whether they were maternally ($0$) or paternally ($1$) inherited.      
+\end{definition}
+
+Such sex path maps describe past biological events. Given a genealogy, a sex path implies a genealogical path. However, if a genealogy contains error, the implied genealogical path may be incorrect. 
+
+\begin{definition}
+An error path map of length $k$ is a map $M_k:S \rightarrow {0,1}*k$ from a set of genealogical ploids $S$ to binary strings of length $k$ representing the path of ancestral transmissions of this allele, according to whether they were maternally ($0$) or paternally ($1$) inherited.      
+\end{definition}
 
 
 \begin{definition}
-An edge map $M_e:E(C) \rightarrow P(H)$ is a map from the edges of the coalescent tree to directed paths in the genealogy.    
+An edge map $M_e:E(C) \rightarrow P(H)$ is a map from the edges of the coalescent tree to a binary string directed paths in the genealogy.    
 \end{definition}
 
 edge maps are used to record the entire inheritance path in the genealogy corresponding to a coalescent tree. Some edges in the gene genealogies will be above the founders of the genealogy. We can imagine that the genealogy is supplemented with an an ancestral node $a$ from which all genealogical founders descend.  
@@ -63,9 +79,7 @@ A partial edge map $M_p:E(C) \rightarrow P(H) \cup \{u\}$ is a map from the edge
 
 
 
-
 Our task, given a partial edge map $M_p$, is to reconstruct an $M_e$ and $M_e$ given $L$ and the laws of mendelian inheritance.  
-
 \begin{definition}
 	Let $D$ be a directed graph and $a_1, a_2 \in V(D)$. A vertex $v \in V(D)$ is said to a most recent common ancestor (MRCA) of $a_1$ and $a_2$ if there exists 
 	a directed path $P_{v,a_1}$ between $v$ and $a_1$ and a directed path $P_{v,a_2}$ between $v$ and $a_2$ such that $P_{v,a_1} \cap P_{v,a_2} = \{v\}.$	
