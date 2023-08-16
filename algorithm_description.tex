@@ -54,6 +54,7 @@ In order to be able to take recombination events into account, we need to use a 
 
 In most cases, various statistical methods are used in order to derive the ARG from the pedigree. One of the most well-known libraries used for deriving the ARG are: \href{https://palamaralab.github.io/software/argneedle/}{ARG-Needle}, \href{https://palamaralab.github.io/software/asmc/}{ASMC}, \href{https://myersgroup.github.io/relate/}{Relate} and \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6726478/}{tsinfer}. Some of these methods are more accurate and require a lot of resources, while the others are scalable but are not accurate enough.
 
+Unfortunately, there are multiple types of errors in the data that we have to account for in order to find the correct solution for the problem. Firstly, we should remember that ARG can have errors because it is obtained by using statistical methods. Apart from that, errors can also happen in the pedigree for various reasons (adopted children, errors in documents, etc.).  
 
 \section{Problem statement}
 
