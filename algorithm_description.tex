@@ -6,6 +6,17 @@
 \usepackage{xcolor}
 \usepackage{listings}
 
+% Package for urls
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	pdftitle={Overleaf Example},
+	pdfpagemode=FullScreen,
+}
+
 \DeclareMathOperator{\desc}{desc}
 
 \lstset{
@@ -34,6 +45,14 @@
 	
 \title{"Path aware" alignment}
 \date{}
+
+\section{Problem description}
+
+There are two main graphical objects in computational genetics --- the pedigree and the coalescence tree. The pedigree (also called genealogical tree or family tree) describes the relations between parents and their children. The coalescence tree, on the other hand, describes how alleles within the pedigree may have originated from the common ancestor. The coalescence tree can and should be thought of as the topology of a pedigree, which represents only the information that we are interested in. Notice that a coalescence tree is a directed graph, but it can still have loops if we release the orientation. In other words, a coalescence tree is not an orientation of a tree, but it is a DAG (directed acyclic graph).
+
+In order to be able to take recombination events into account, we need to use a more complicated structure called ARG (ancestral recombination graph) which gives a more realistic understanding of how the genetic material is transmitted. Generally speaking, an ARG is a sequence of highly correlated coalescence trees that describe the allele transmissions within the same pedigree but across different positions along the genome.  More information about ARG can be found \href{https://nielsen-lab.github.io/pdfs/papers/argeval.pdf}{here}. 
+
+In most cases, various statistical methods are used in order to derive the ARG from the pedigree. One of the most well-known libraries used for deriving the ARG are: \href{https://palamaralab.github.io/software/argneedle/}{ARG-Needle}, \href{https://palamaralab.github.io/software/asmc/}{ASMC}, \href{https://myersgroup.github.io/relate/}{Relate} and \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6726478/}{tsinfer}. Some of these methods are more accurate and require a lot of resources, while the others are scalable but are not accurate enough.
 
 
 \section{Problem statement}
